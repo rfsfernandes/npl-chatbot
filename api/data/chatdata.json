@@ -1,0 +1,22 @@
+{
+    "default" : "Desculpa, não percebi... podes tentar de novo?",
+    "questionlist" : [
+        {
+            "questions": [
+                "como te chamas?",
+                "qual o teu nome?",
+                "como te chamam?",
+                "teu nome?"
+            ],
+            "answer": "O teu bot favorito: Asdrubal"
+        },
+        {
+            "questions": [
+                "como estas?",
+                "estas bem?"
+            ],
+            "answer": "Bem. E tu?"
+        }
+    ]
+}
+
