@@ -8,7 +8,7 @@ function MessageList(props) {
   });
 
   return (
-    <div className="body">
+    <div className="messageList">
       <ul>
         {list}
       </ul>

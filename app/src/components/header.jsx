@@ -2,9 +2,9 @@ import React from 'react';
 
 function Header() {
     return (
-      <header className="header">
+      <div className="header">
         
-      </header>
+      </div>
     );
   }
   

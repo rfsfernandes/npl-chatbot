@@ -1,14 +1,23 @@
 const express = require("express");
+const cors = require('cors')
 const bodyparser = require("body-parser");
 const app = express();
 const fs = require("fs");
+const { allowedNodeEnvironmentFlags } = require("process");
 
 const fileraw = fs.readFileSync(__dirname + "/data/chatdata.json");
 const file = JSON.parse(fileraw);
 const defaultAnwer = file.default;
 const questionsList = Object.values(file.questionlist);
 
-app.use(bodyparser.urlencoded({ extended: true }));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/api/", function (req, res) {
   res.send("We live bros!");
@@ -22,7 +31,7 @@ app.post("/api/getAnswers", function (req, res) {
       console.log(valueArray); */
       let userInputArray = normalize(req.body.question).split(" ");
       /* console.log("UserInput array: ");
-      console.log(userInputArray); */
+      console.log(userInputArray);  */
       let numberOfOccurrences = checkNumberOfOccurences(userInputArray, valueArray);
       /* console.log("Number of occurrences: " + numberOfOccurrences);
       console.log("Needs to be: " + (3 / 4) * userInputArray.length); */
@@ -32,8 +41,9 @@ app.post("/api/getAnswers", function (req, res) {
     if (findInQuestions) return findInQuestions;
   });
 
-  if (possibleAnswers) res.send(possibleAnswers.answer);
-  else res.send(defaultAnwer);
+  if (possibleAnswers) res.status(200).json({code:200, answer:possibleAnswers.answer});
+  else res.status(201).json({code:200, answer:defaultAnwer}); 
+  
 });
 
 const normalize = (str) => {
