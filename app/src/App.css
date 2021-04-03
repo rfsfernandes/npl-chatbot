@@ -1,50 +1,74 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: #f6f5f5;
+  font-family: Lexend-Regular !important;
 }
 
 ul {
   margin: 0;
+  padding: 0;
+  list-style-type: none;
+  padding-top: 2%;
 }
+
+/* <-- scrollbar --> */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d3e0ea; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a8bbc9; 
+}
+/* <-- end scrollbar --> */
 
 .header {
   height: 10vh;
-  background-color: aqua;
   margin-bottom: 0;
   padding: 0;
 }
 
 .body {
   height: 62vh;
-  background-color: blue;
   padding: 4vh;
 }
 
 .messageList {
   width: 100%;
   height: 80%;
+  overflow: auto;
 }
 
 .grid-container {
-  background-color: aqua;
+  
   
 }
 
 .message-container {
   height: 100%;
-  background-color: aquamarine;
-  border-style: solid;
-  border-width: 2px;
-  border-color: lightslategrey;
+  background-color: white;
+  box-shadow: 5px 10px #888888;
   border-radius: 20px;
 }
 
 .footer {
   height: 20vh;
-  background-color: brown;
 }
 
 .user-input {
+  margin-left: 2%;
   height: 20%;
   margin-bottom: 0 !important;
 }
@@ -63,4 +87,59 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.bot-message-container {
+  float: left;
+  width: 55%;
+}
+
+.human-message-container {
+  float: right;
+  width: 55%;
+  text-align: right;
+}
+
+.bot-message {
+  margin-left: 3%;
+  padding: 10px 20px;
+  background-color: #ffab73;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.human-message {
+  margin-right: 3%;
+  padding: 10px 20px;
+  background-color: #d3e0ea;
+  border-radius: 20px;
+  text-align: right;
+  display: inline-block;
+}
+
+.MuiSvgIcon-root {
+  color: #1687a7;
+  font-size: 2em !important;
+}
+
+.MuiOutlinedInput-root{
+  border-radius: 40px !important;
+}
+
+.MuiInputBase-root {
+  background-color: #f6f5f5 !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.MuiInputLabel-outlined {
+  margin-left: 20px !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: #1687a7 !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #f6f5f5 !important;
 }

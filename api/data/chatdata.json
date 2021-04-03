@@ -4,18 +4,37 @@
         {
             "questions": [
                 "como te chamas?",
-                "qual o teu nome?",
-                "como te chamam?",
-                "teu nome?"
+                "qual é o teu nome?"
             ],
             "answer": "O teu bot favorito: Asdrubal"
         },
         {
             "questions": [
+                "está tudo bem?",
                 "como estas?",
-                "tu estas bem?"
+                "tudo bem?"
             ],
-            "answer": "Bem. E tu?"
+            "answer": "Está tudo bem, obrigado. E contigo?"
+        },
+        {
+            "questions": [
+                "Também"
+            ],
+            "answer": "Ainda bem. Em que te posso ajudar?"
+        },
+        {
+            "questions": [
+                "Olá",
+                "Hello"
+            ],
+            "answer": "Olá! Eu sou o Asdrubal!"
+        },
+        {
+            "questions": [
+                "Quem és?",
+                "Para que serves?"
+            ],
+            "answer": "Eu sou um ChatBot desenvolvido para te ajudar em questões de culináia!"
         }
     ]
 }

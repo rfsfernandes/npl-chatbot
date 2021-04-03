@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import MessageList from "./messagelist";
 import UserInput from "./userinput";
+import Card from '@material-ui/core/Card';
+
 const axios = require('axios').default;
-
-
 const INITIAL_STATE = [
   {
     id: 0,
@@ -67,14 +67,14 @@ function Body() {
 
   return (
     <div className="body">
-      <div className="message-container">
+      <Card className="message-container">
         <MessageList messageList={messageList} />
         <UserInput
           inputValue={formFields.text}
           onChangeEvent={handleFieldChange}
           onSubmit={postQuestion}
         />
-      </div>
+      </Card>
     </div>
   );
 }
