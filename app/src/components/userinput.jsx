@@ -1,8 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { Grid } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import SendRoundedIcon from "@material-ui/icons/SendRounded";
 
 function UserInput(props) {
@@ -19,7 +18,7 @@ function UserInput(props) {
             <TextField
               className="chat-input"
               id="outlined-multiline-static"
-              label="Envia a tua mensagem..."
+              label="Pergunta-me algo"
               rows={1}
               variant="outlined"
               name="text"
@@ -29,8 +28,8 @@ function UserInput(props) {
           </Grid>
           <Grid item xl={1} md={3} lg={1} sm={3} xs={4}>
             <Grid container alignItems="center" justify="center">
-              <IconButton aria-label="send" type="submit" >
-                <SendRoundedIcon color="#1687a7" />
+              <IconButton aria-label="send" type="submit"  >
+                <SendRoundedIcon id="icon-send" />
               </IconButton>
             </Grid>
           </Grid>

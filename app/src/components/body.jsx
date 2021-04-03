@@ -19,14 +19,16 @@ const FORM_INITIAL_STATE = {
 function Body() {
   const [messageList, setMessageList] = useState(INITIAL_STATE);
   const [formFields, setFormFields] = useState(FORM_INITIAL_STATE);
+  const [messageId, setMessageId] = useState(0);
 
   const postQuestion = (event) => {
     event.preventDefault();
     if(formFields.text) {
+      let tempMessageIdUser = messageId + 1;
       setMessageList((previous) => [
         ...previous,
         {
-          id: messageList.length,
+          id: tempMessageIdUser,
           messageText: formFields.text,
           type: 1,
         },
@@ -37,15 +39,17 @@ function Body() {
       },
       
       ).then(function (response) {
-        console.log(response);
+        // console.log(response);
+        let tempMessageIdBot = tempMessageIdUser + 1;
         setMessageList((previous) => [
           ...previous,
           {
-            id: messageList.length+1,
+            id: tempMessageIdBot,
             messageText: response.data.answer,
             type: 0,
           },
         ]);
+        setMessageId(tempMessageIdBot);
       })
       .catch(function (error) {
         console.log(error);
@@ -58,17 +62,22 @@ function Body() {
     
   };
 
+  const onDeleteItem = (id) => {
+    setMessageList(messageList.filter(item => item.id !== id))
+    console.log(messageList);
+  }
+
   const handleFieldChange = (event) => {
     const { name, value } = event.target;
     setFormFields(() => ({
       text: value,
     }));
   };
-
+  
   return (
     <div className="body">
       <Card className="message-container">
-        <MessageList messageList={messageList} />
+        <MessageList onDeleteItem={onDeleteItem} messageList={messageList} />
         <UserInput
           inputValue={formFields.text}
           onChangeEvent={handleFieldChange}

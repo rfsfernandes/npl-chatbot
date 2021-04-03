@@ -5,8 +5,10 @@ function MessageList(props) {
   const list = props.messageList.map((messageValue) => {
     return (
       <Message
+        onDeleteItem={props.onDeleteItem}
         type={messageValue.type}
         key={messageValue.id}
+        id={messageValue.id}
         messageText={messageValue.messageText}
       />
     );
@@ -24,13 +26,19 @@ function MessageList(props) {
 
   return (
     <div className="messageList">
-      <table style={{width: "100%"}}>
-        <tr>
-          <ul>{list}</ul>
-        </tr>
-        <tr>
-          <div ref={messagesEndRef}/>
-        </tr>
+      <table style={{ width: "100%" }}>
+        <tbody>
+          <tr>
+            <td>
+              <ul>{list}</ul>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div ref={messagesEndRef} />
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   );

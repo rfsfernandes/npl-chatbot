@@ -12,6 +12,10 @@ ul {
   padding-top: 2%;
 }
 
+.hidden {
+  display: none;
+}
+
 /* <-- scrollbar --> */
 /* width */
 ::-webkit-scrollbar {
@@ -117,9 +121,9 @@ ul {
   display: inline-block;
 }
 
-.MuiSvgIcon-root {
-  color: #1687a7;
-  font-size: 2em !important;
+#icon-send{
+  color: #1687a7 !important;
+  font-size: 1.5em !important;
 }
 
 .MuiOutlinedInput-root{
