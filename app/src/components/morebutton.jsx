@@ -44,21 +44,28 @@ import {
 function MoreButton(props) {
   const popupState = usePopupState({ variant: "popover", popupId: "demoMenu" });
 
-  const handleClick = (popupState, id) => {
+  const handleClickDelete = (popupState, id) => {
     console.log(popupState);
     popupState.close();
 		props.onDeleteItem(id);
   };
 
+  const handleClickTeach = (popupState) => {
+    console.log(popupState);
+    popupState.close();
+		props.onTeachItem();
+  };
+
   return (
-    <span>
+    <td>
       <IconButton variant="contained" {...bindTrigger(popupState)}>
         <MoreVertIcon className="hidden" />
       </IconButton>
       <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={() => handleClick(popupState, props.id)}>Apagar</MenuItem>
+        <MenuItem onClick={() => handleClickDelete(popupState, props.id)}>Apagar</MenuItem>
+        {props.isDefault ? <MenuItem onClick={() => handleClickTeach(popupState)}>Ensinar</MenuItem> : ""}
       </Menu>
-    </span>
+    </td>
   );
 }
 

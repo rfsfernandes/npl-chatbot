@@ -2,7 +2,13 @@ html, body {
   margin: 0;
   padding: 0;
   background-color: #f6f5f5;
+  background-image: url("images/food-pattern.png");
+  background-repeat: no-repeat;
+  background-size: cover;
   font-family: Lexend-Regular !important;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
 
 ul {
@@ -10,6 +16,21 @@ ul {
   padding: 0;
   list-style-type: none;
   padding-top: 2%;
+}
+
+h1, h2, h3, h4 {
+  margin: auto;
+  text-align: center;
+}
+
+.App, #root, .grid-container {
+ height: 100%;
+ width: 100%;
+}
+
+
+.remove-max-width {
+  max-width: none !important;
 }
 
 .hidden {
@@ -38,15 +59,25 @@ ul {
 }
 /* <-- end scrollbar --> */
 
+.header, .body, .footer {
+  height: 100%;
+  width: 100%;
+}
+
 .header {
-  height: 10vh;
   margin-bottom: 0;
   padding: 0;
 }
 
+.header h1 {
+  height: 100%;
+  color: #fe893b;
+  text-align: center;
+  margin: 0;
+}
+
 .body {
-  height: 62vh;
-  padding: 4vh;
+  margin: auto;
 }
 
 .messageList {
@@ -55,20 +86,31 @@ ul {
   overflow: auto;
 }
 
-.grid-container {
-  
-  
+.message-container {
+  height: 90%;
+  background-color: white;
+  border-radius: 10px !important;
+  margin: 1% 20%;
 }
 
-.message-container {
-  height: 100%;
-  background-color: white;
-  box-shadow: 5px 10px #888888;
-  border-radius: 20px;
+.body::before {
+  content: " ";
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 15vh;
+  right: 0;
+  position: absolute;
+  z-index: 1;   
+  pointer-events: none;
+  background: url("images/icon.png") center no-repeat;
 }
 
 .footer {
-  height: 20vh;
+  height: 100%;
+  background-color: #fe893bd4;
+  color: #717070;
+  display: block;
 }
 
 .user-input {
@@ -147,3 +189,58 @@ ul {
 .MuiOutlinedInput-notchedOutline {
   border-color: #f6f5f5 !important;
 }
+
+.header-title {
+  background: #FFFFFF; 
+  font-size: 100px;
+}
+
+.modal-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.modal {
+  padding: 20px !important;
+  border-radius: 8px !important;
+  padding: 2px 4px 3px !important;
+}
+
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+
+@media screen and (max-width: 1800px) {
+  
+  .message-container {
+    margin: 1% 15%;
+  }
+}
+
+@media screen and (max-width: 1560px) {
+  .header-title {
+    font-size: 80px;
+  }
+
+  .message-container {
+    margin: 1% 10%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .header-title {
+    font-size: 60px;
+  }
+  .message-container {
+    margin: 1% 10%;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .header-title {
+    font-size: 50px;
+  }
+  .message-container {
+    margin: 1% 5%;
+  }
+}
+

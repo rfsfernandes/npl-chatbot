@@ -2,3 +2,8 @@
   font-family: "Lexend-Regular";
   src: local("Lexend-Regular"), url(./fonts/Lexend-Regular.ttf) format("truetype");
 }
+
+@font-face {
+  font-family: "LemonJelly";
+  src: local("LemonJelly"), url(./fonts/LemonJelly.ttf) format("truetype");
+}

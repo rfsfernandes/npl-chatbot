@@ -24,13 +24,33 @@ function Message(props) {
               : "human-message-container"
           }
         >
-          {props.type == 1 && isShown? <MoreButton id={props.id} onDeleteItem={props.onDeleteItem}/> : ""}
+          <table style={ props.type == 1 ? {float: "right"} : {}}>
+            <tbody>
+              <tr>
+                {props.type == 1 && isShown ? (
+                  <MoreButton id={props.id} isDefault={props.isDefault} onDeleteItem={props.onDeleteItem} />
+                ) : (
+                  <td style={{width: "48px", height: "48px"}}></td>
+                )}
 
-          <p className={props.type == 0 ? "bot-message" : "human-message"}>
-            {props.messageText}
-          </p>
+                <td>
+                  <p
+                    className={
+                      props.type == 0 ? "bot-message" : "human-message"
+                    }
+                  >
+                    {props.messageText}
+                  </p>
+                </td>
 
-          {props.type == 0 && isShown ? <MoreButton id={props.id} onDeleteItem={props.onDeleteItem}/> : ""}
+                {props.type == 0 && isShown ? (
+                  <MoreButton id={props.id} isDefault={props.isDefault} onDeleteItem={props.onDeleteItem} onTeachItem={props.onTeachItem} />
+                ) : (
+                  <td style={{width: "48px", height: "48px"}}></td>
+                )}
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </li>

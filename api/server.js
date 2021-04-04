@@ -4,10 +4,12 @@ const bodyparser = require("body-parser");
 const app = express();
 const fs = require("fs");
 const { allowedNodeEnvironmentFlags } = require("process");
-
-const fileraw = fs.readFileSync(__dirname + "/data/chatdata.json");
-const file = JSON.parse(fileraw);
-const defaultAnwer = file.default;
+const filePath = __dirname + "/data/chatdata.json";
+const fileraw = fs.readFileSync(filePath);
+let file = JSON.parse(fileraw);
+const defaultAnswer = file.default;
+const thanksMessage = file.thanksMessage;
+const errorMessage = file.errorMessage;
 const questionsList = Object.values(file.questionlist);
 const isDebug = false;
 
@@ -27,7 +29,7 @@ app.get("/api/", function (req, res) {
   res.send("We live bros!");
 });
 
-app.post("/api/getAnswers", function (req, res) {
+app.post("/api/sendQuestion", function (req, res) {
   let possibleAnswers = questionsList.find((currentvalue) => {
     logValuesToConsole("Current Value", currentvalue);
     let findInQuestions = currentvalue.questions.find((value) => {
@@ -42,27 +44,53 @@ app.post("/api/getAnswers", function (req, res) {
       );
 
       let needsToBe = (3 / 4) * userInputArray.length;
-      
-      if((needsToBe % 1) >= 0.5) {
-        logValuesToConsole("Was rounded up", true)
+
+      if (needsToBe % 1 >= 0.5) {
+        logValuesToConsole("Was rounded up", true);
         needsToBe = Math.round(needsToBe);
       } else {
-        logValuesToConsole("Was rounded up", false)
+        logValuesToConsole("Was rounded up", false);
         needsToBe = Math.floor(needsToBe);
       }
 
       logValuesToConsole("Number of occurrences:", numberOfOccurrences);
       logValuesToConsole("Needs to be: ", needsToBe);
-      
-      if (numberOfOccurrences >= needsToBe)
-        return currentvalue.answer;
+
+      if (numberOfOccurrences >= needsToBe) return currentvalue.answer;
     });
     if (findInQuestions) return findInQuestions;
   });
 
   if (possibleAnswers)
-    res.status(200).json({ code: 200, answer: possibleAnswers.answer });
-  else res.status(201).json({ code: 200, answer: defaultAnwer });
+    res
+      .status(200)
+      .json({ code: 200, answer: possibleAnswers.answer, isDefault: false });
+  else
+    res.status(201).json({ code: 200, answer: defaultAnswer, isDefault: true });
+});
+
+app.post("/api/teachBot", function (req, res) {
+  questionsList.push({
+    questions: [req.body.question],
+    answer: req.body.answer,
+  });
+
+  const newJson = {
+    default: defaultAnswer,
+    thanksMessage: thanksMessage,
+    errorMessage: errorMessage,
+    questionlist: questionsList,
+  };
+  file = newJson
+  fs.writeFile(filePath, JSON.stringify(newJson), (err) => {
+    if (err) {
+      return res.status(201).json({ code: 200, answer: errorMessage, isDefault: false });
+    }
+    res
+      .status(200)
+      .json({ code: 200, answer: thanksMessage, isDefault: false });
+  });
+
 });
 
 const logValuesToConsole = (tag, value) => {

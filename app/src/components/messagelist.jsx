@@ -5,11 +5,13 @@ function MessageList(props) {
   const list = props.messageList.map((messageValue) => {
     return (
       <Message
+        onTeachItem={props.onTeachItem}
         onDeleteItem={props.onDeleteItem}
         type={messageValue.type}
         key={messageValue.id}
         id={messageValue.id}
         messageText={messageValue.messageText}
+        isDefault={messageValue.isDefault}
       />
     );
   });
