@@ -168,7 +168,7 @@ function Body() {
 
   return (
     <div className="body" style={{maxHeight: "66.6vh", minHeight: "66.6vh"}}>
-      <Card className="message-container" elevation={10}>
+      <Card className="message-container" elevation={0}>
         <MessageList
           onTeachItem={onTeachItem}
           onDeleteItem={onDeleteItem}

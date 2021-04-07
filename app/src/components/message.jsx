@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import SendRoundedIcon from "@material-ui/icons/SendRounded";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import MoreButton from "./morebutton";
+import Card from "@material-ui/core/Card";
 
 function Message(props) {
   const [isShown, setIsShown] = useState(false);
@@ -24,29 +20,42 @@ function Message(props) {
               : "human-message-container"
           }
         >
-          <table style={ props.type == 1 ? {float: "right"} : {}}>
+          <table style={props.type == 1 ? { float: "right" } : {}}>
             <tbody>
               <tr>
                 {props.type == 1 && isShown ? (
-                  <MoreButton id={props.id} isDefault={props.isDefault} onDeleteItem={props.onDeleteItem} />
+                  <MoreButton
+                    id={props.id}
+                    isDefault={props.isDefault}
+                    onDeleteItem={props.onDeleteItem}
+                  />
+                ) : props.type == 0 ? (
+                  ""
                 ) : (
-                  <td style={{width: "48px", height: "48px"}}></td>
+                  <td style={{ width: "48px", height: "48px" }}></td>
                 )}
 
                 <td>
-                  <p
+                  <Card
                     className={
                       props.type == 0 ? "bot-message" : "human-message"
                     }
                   >
-                    {props.messageText}
-                  </p>
+                    <p>{props.messageText}</p>
+                  </Card>
                 </td>
 
                 {props.type == 0 && isShown ? (
-                  <MoreButton id={props.id} isDefault={props.isDefault} onDeleteItem={props.onDeleteItem} onTeachItem={props.onTeachItem} />
+                  <MoreButton
+                    id={props.id}
+                    isDefault={props.isDefault}
+                    onDeleteItem={props.onDeleteItem}
+                    onTeachItem={props.onTeachItem}
+                  />
+                ) : props.type == 1 ? (
+                  ""
                 ) : (
-                  <td style={{width: "48px", height: "48px"}}></td>
+                  <td style={{ width: "48px", height: "48px" }}></td>
                 )}
               </tr>
             </tbody>

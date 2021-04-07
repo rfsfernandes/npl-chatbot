@@ -1,12 +1,9 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #f6f5f5;
-  background-image: url("images/food-pattern.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: linear-gradient(to right top, #65dfc9, #6cdbeb);
   font-family: Lexend-Regular !important;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   position: absolute;
 }
@@ -45,17 +42,32 @@ h1, h2, h3, h4 {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.3)
+  );
+  backdrop-filter: blur(2rem);
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #d3e0ea; 
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.4)
+  );
+  backdrop-filter: blur(2rem); 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8bbc9; 
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.7)
+  );
+  backdrop-filter: blur(2rem); 
 }
 /* <-- end scrollbar --> */
 
@@ -71,7 +83,7 @@ h1, h2, h3, h4 {
 
 .header h1 {
   height: 100%;
-  color: #fe893b;
+  color: rgb(255, 183, 0);
   text-align: center;
   margin: 0;
 }
@@ -88,28 +100,60 @@ h1, h2, h3, h4 {
 
 .message-container {
   height: 90%;
-  background-color: white;
-  border-radius: 10px !important;
+  background: white;
+  border-radius: 2rem !important;
   margin: 1% 20%;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.3)
+  );
+  backdrop-filter: blur(2rem);
+  
 }
 
-.body::before {
-  content: " ";
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 15vh;
-  right: 0;
+.MuiPaper-root {
+  background-color: #ffffff00 !important;
+}
+
+.bot-cartoon-container {
+  width: 100%;
+  height: 100vh;
   position: absolute;
-  z-index: 1;   
-  pointer-events: none;
-  background: url("images/icon.png") center no-repeat;
+  
+}
+
+.bot-cartoon {
+  transform: rotate(-65deg);
+  top: 10%;
+  left: 9%;
+  position: absolute;
+  z-index: 0;   
+}
+
+.human-cartoon-container {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  
+}
+
+.human-cartoon {
+  transform: rotate(100deg);
+  bottom: 15%;
+  right: 9%;
+  position: absolute;
+  z-index: 0;   
 }
 
 .footer {
   height: 100%;
-  background-color: #fe893bd4;
-  color: #717070;
+  background: linear-gradient(
+    to right top,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.2)
+  );
+  color: #2fd6f0;
   display: block;
 }
 
@@ -147,25 +191,34 @@ h1, h2, h3, h4 {
 }
 
 .bot-message {
-  margin-left: 3%;
-  padding: 10px 20px;
-  background-color: #ffab73;
-  border-radius: 20px;
+  margin-left: 3vh;
+  padding: 0 25px;
+  background-color: #ffab73 !important;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 183, 0, 0.9),
+    rgba(255, 183, 0, 0.6)
+  ) !important;
+  border-radius: 1.5rem !important;
   display: inline-block;
 }
 
 .human-message {
-  margin-right: 3%;
-  padding: 10px 20px;
-  background-color: #d3e0ea;
-  border-radius: 20px;
+  margin-right: 3vh;
+  padding: 0 25px;
+  background: linear-gradient(
+    to left bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.2)
+  ) !important;
+  border-radius: 1.5rem !important;
   text-align: right;
   display: inline-block;
 }
 
 #icon-send{
-  color: #1687a7 !important;
-  font-size: 1.5em !important;
+  color: #6cdbeb !important;
+  font-size: 1.8em !important;
 }
 
 .MuiOutlinedInput-root{
@@ -173,7 +226,11 @@ h1, h2, h3, h4 {
 }
 
 .MuiInputBase-root {
-  background-color: #f6f5f5 !important;
+  background: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.7),
+    rgba(255, 255, 255, 0.3)
+  ) !important;
   padding-left: 20px !important;
   padding-right: 20px !important;
 }
@@ -187,11 +244,15 @@ h1, h2, h3, h4 {
 }
 
 .MuiOutlinedInput-notchedOutline {
-  border-color: #f6f5f5 !important;
+  border-style: none !important;
+  border-color: none !important;
 }
 
 .header-title {
-  background: #FFFFFF; 
+  margin-top: 2vh !important;
+}
+
+.header-title-span {
   font-size: 100px;
 }
 
@@ -217,7 +278,7 @@ h1, h2, h3, h4 {
 }
 
 @media screen and (max-width: 1560px) {
-  .header-title {
+  .header-title-span {
     font-size: 80px;
   }
 
@@ -227,7 +288,7 @@ h1, h2, h3, h4 {
 }
 
 @media screen and (max-width: 800px) {
-  .header-title {
+  .header-title-span {
     font-size: 60px;
   }
   .message-container {
@@ -236,7 +297,7 @@ h1, h2, h3, h4 {
 }
 
 @media screen and (max-width: 544px) {
-  .header-title {
+  .header-title-span {
     font-size: 50px;
   }
   .message-container {
