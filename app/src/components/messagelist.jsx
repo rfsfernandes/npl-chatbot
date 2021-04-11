@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useEffect, useRef } from "react";
 import Message from "./message";
 
 function MessageList(props) {
@@ -27,7 +27,7 @@ function MessageList(props) {
   }, [props.messageList]);
 
   return (
-    <div className="messageList">
+    <div className="message-list">
       <table style={{ width: "100%" }}>
         <tbody>
           <tr>

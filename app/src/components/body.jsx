@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import MessageList from "./messagelist";
 import UserInput from "./userinput";
 import Card from "@material-ui/core/Card";
@@ -168,7 +168,11 @@ function Body() {
 
   return (
     <div className="body" style={{maxHeight: "66.6vh", minHeight: "66.6vh"}}>
+      
       <Card className="message-container" elevation={10}>
+      <div className="logo-container">
+        <img src={"icon.png"}/>
+      </div>
         <MessageList
           onTeachItem={onTeachItem}
           onDeleteItem={onDeleteItem}
