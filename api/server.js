@@ -1,5 +1,10 @@
 const express = require("express");
 const bodyparser = require("body-parser");
+const fs = require("fs");
+const { allowedNodeEnvironmentFlags } = require("process");
+const filePath = __dirname + "/data/chatdata.json";
+const fileraw = fs.readFileSync(filePath);
+let file = JSON.parse(fileraw);
 const app = express();
 require("dotenv").config();
 const axios = require("axios").default;
