@@ -19,10 +19,10 @@ function Message(props) {
               : "human-message-container"
           }
         >
-          <table style={ props.type === 1 ? {float: "right"} : {}}>
+          <table style={props.type === 1 ? { float: "right" } : {}}>
             <tbody>
               <tr>
-              {props.type === 1 && isShown ? (
+                {props.type === 1 && isShown ? (
                   <MoreButton
                     id={props.id}
                     isDefault={props.isDefault}
@@ -40,12 +40,21 @@ function Message(props) {
                       props.type === 0 ? "bot-message" : "human-message"
                     }
                   >
-                    {props.messageText}
+                    <div dangerouslySetInnerHTML=
+                    {{
+                      __html: props.messageText,
+                    }}></div>
+                    
                   </p>
                 </td>
 
                 {props.type === 0 && isShown ? (
-                  <MoreButton id={props.id} isDefault={props.isDefault} onDeleteItem={props.onDeleteItem} onTeachItem={props.onTeachItem} />
+                  <MoreButton
+                    id={props.id}
+                    isDefault={props.isDefault}
+                    onDeleteItem={props.onDeleteItem}
+                    onTeachItem={props.onTeachItem}
+                  />
                 ) : props.type === 1 ? (
                   ""
                 ) : (

@@ -1,18 +1,17 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 const fs = require("fs");
-const { allowedNodeEnvironmentFlags } = require("process");
 const filePath = __dirname + "/data/chatdata.json";
 const fileraw = fs.readFileSync(filePath);
 let file = JSON.parse(fileraw);
+const { allowedNodeEnvironmentFlags } = require("process");
+const RespondeHandler = require("./model/response_handler");
+const responseHandler = new RespondeHandler(file);
 const app = express();
 require("dotenv").config();
 const axios = require("axios").default;
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + process.env.WIT_TOKEN;
 const wit_base_url = "https://api.wit.ai/message";
-const defaultAnswer =
-  "Desculpa, não sei responder a tua pergunta. Podes sempre ensinar-me nas opções desta resposta, e para a próxima já saberei :)";
-const { allowedNodeEnvironmentFlags } = require("process");
 
 const isDebug = false;
 
@@ -44,13 +43,15 @@ app.post("/api/sendQuestion", function (req, res) {
     })
     .then((response) => {
       if(response.status == 200) {
-        res.status(201).json({ code: 200, answer: response.data.text, isDefault: true })
+        let message = responseHandler.handleResponse(response.data.intents, response.data.entities);
+        res.status(201).json({ code: 200, answer: message, isDefault: true })
       }
     })
     .catch((error) => {
       console.log(error);
     });
-  } else res.status(201).json({ code: 200, answer: defaultAnswer, isDefault: true });
+
+  } else res.status(201).json({ code: 200, answer: "", isDefault: true });
 
   /* if (possibleAnswers)
     res
