@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyparser = require("body-parser");
+const cookieParser = require('cookie-parser');
+
 const fs = require("fs");
 const filePath = __dirname + "/data/chatdata.json";
 const fileraw = fs.readFileSync(filePath);
@@ -15,6 +17,7 @@ const wit_base_url = "https://api.wit.ai/message";
 
 const isDebug = false;
 
+app.use(cookieParser());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
@@ -43,15 +46,15 @@ app.post("/api/sendQuestion", function (req, res) {
     })
     .then((response) => {
       if(response.status == 200) {
-        let message = responseHandler.handleResponse(response.data.intents, response.data.entities);
-        res.status(201).json({ code: 200, answer: message, isDefault: true })
+        let message = responseHandler.handleResponse(res, req, response.data.intents, response.data.entities);
+        res.status(201).json({ code: 200, answer: message})
       }
     })
     .catch((error) => {
       console.log(error);
     });
 
-  } else res.status(201).json({ code: 200, answer: "", isDefault: true });
+  } else res.status(201).json({ code: 200, answer: "Ocorreu um erro de sistema. Por favor, tente de novo."});
 
   /* if (possibleAnswers)
     res
@@ -78,5 +81,7 @@ const normalize = (str) => {
     .replace(/[^a-zA-Z ]/g, "")
     .toLowerCase();
 };
+
+
 
 app.listen(3001, () => console.log("Connected to 3001"));

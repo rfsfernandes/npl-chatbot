@@ -1,11 +1,15 @@
 {
     "default_answer": "Desculpa, não sei responder a tua pergunta. Podes sempre ensinar-me nas opções desta resposta, e para a próxima já saberei :)",
     "room_reservation": {
+        "room_already_reserved": "Pelo que estou a ver no sistema, já tem uma reserva! Quer recomeçar de novo ou alterar esta reserva?",
         "room_reservation_question": "Para reservar um quarto basta dizer quantas camas quer e o tipo de cama que quer (cama de casal ou cama individual)!",
         "missing_datetime": "Indique a data para a qual pretende realizar a reserva!",
         "missing_bed_type": "Que tipo de cama pretende? Cama de casal ou individual?",
         "missing_bed_quantity": "De quantas camas necessita no quarto?",
         "missing_room_quantity": "Quantos quartos pretende reservar?",
         "reservation_success": "O seu quarto foi reservado com sucesso! Reveja os detalhes: "
+    },
+    "room_change": {
+        "room_not_reserved_yet": "Não encontrei a sua reserva no sistema. Tem a certeza que efetuou uma reserva?"
     }
 }
