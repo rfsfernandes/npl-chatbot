@@ -7,6 +7,7 @@
         "missing_bed_type": "Que tipo de cama pretende? Cama de casal ou individual?",
         "missing_bed_quantity": "De quantas camas necessita no quarto?",
         "missing_room_quantity": "Quantos quartos pretende reservar?",
+        "missing_confirmation": "Deseja confirmar a reserva?",
         "reservation_success": "O seu quarto foi reservado com sucesso! Reveja os detalhes: "
     },
     "room_change": {

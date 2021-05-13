@@ -14,6 +14,18 @@ const monthNames = [
   "Dezembro",
 ];
 
+const conversation_states = [
+  "room_reservation", // 0
+  "room_change", // 1
+  "room_cancel", // 2
+  "room_service", // 3
+  "gym_access", // 4
+  "cafe_reservation", // 5
+  "pool_reservation", // 6
+];
+
+let current_state = undefined;
+
 module.exports = class ResponseHandler {
   file;
   defaultAnswer;
@@ -29,10 +41,26 @@ module.exports = class ResponseHandler {
     return this.defaultAnswer;
   };
 
-  handleResponse = (res, req, intent, entities) => {
+  handleResponse = (res, req, intents, entities) => {
     let message = this.defaultAnswer;
+    console.log(intents);
+    console.log(entities);
+    let intent = {confidence: 0};
 
-    switch (intent[0].name) {
+    for (let current_intent in intents) {
+      if (current_intent.confidence > intent.confidence) {
+        intent = current_intent;
+      }
+    }
+
+    console.log(intent);
+    if (intent.name != "confirmation") {
+      current_state = intent.name;
+    }
+
+    console.log(current_state);
+
+    switch (current_state == undefined ? intent.name : current_state) {
       case "room_reservation":
         message = this.handleReservation(res, req, entities);
         break;
@@ -48,11 +76,18 @@ module.exports = class ResponseHandler {
     let reservationQuestion = false;
     let message = this.defaultAnswer;
 
-    for (var key in entities) {
+    for (let key in entities) {
       if (entities.hasOwnProperty(key)) {
-        if (entities[key][0].role != "room_reservation_question") {
+        if (
+          entities[key][0].role != "room_reservation_question" &&
+          entities[key][0].role != "confirmation"
+        ) {
           this.reservation[entities[key][0].role] = entities[key][0].value;
-        } else {
+        } else if (
+          entities[key][0].role == "confirmation"
+        ) {
+          this.reservation.confirmation = entities[key][0].role;
+        } else if (entities[key][0].role == "room_reservation_question") {
           reservationQuestion = true;
           break;
         }
@@ -68,8 +103,8 @@ module.exports = class ResponseHandler {
         this.reservation = cookie_room_reservation;
         message = this.file.room_reservation.room_already_reserved;
       } else {
-  
-        for (var key in this.reservation) {
+
+        for (let key in this.reservation) {
           if (!this.reservation[key]) {
             message = this.file.room_reservation[`missing_${key}`];
             missingProperty = true;
@@ -122,8 +157,7 @@ module.exports = class ResponseHandler {
     }
 
     return message;
-
-  }
+  };
 
   saveCookie = (res, cookieName, cookieValue) => {
     res.cookie(cookieName, cookieValue);

@@ -3,6 +3,7 @@ module.exports = class Reservation {
     bed_type;
     bed_quantity;
     room_quantity;
+    confirmation;
 
 
     constructor() {
