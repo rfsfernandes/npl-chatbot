@@ -43,22 +43,22 @@ module.exports = class ResponseHandler {
 
   handleResponse = (res, req, intents, entities) => {
     let message = this.defaultAnswer;
-    console.log(intents);
-    console.log(entities);
+    //console.log(intents);
+    //console.log(entities);
     let intent = {confidence: 0};
 
-    for (let current_intent in intents) {
+    for (let current_intent of intents) {
       if (current_intent.confidence > intent.confidence) {
         intent = current_intent;
       }
     }
 
-    console.log(intent);
+    //console.log(intent);
     if (intent.name != "confirmation") {
       current_state = intent.name;
     }
 
-    console.log(current_state);
+    //console.log(current_state);
 
     switch (current_state == undefined ? intent.name : current_state) {
       case "room_reservation":
@@ -103,11 +103,13 @@ module.exports = class ResponseHandler {
         this.reservation = cookie_room_reservation;
         message = this.file.room_reservation.room_already_reserved;
       } else {
-
+        console.log(this.reservation);
         for (let key in this.reservation) {
+          
           if (!this.reservation[key]) {
             message = this.file.room_reservation[`missing_${key}`];
             missingProperty = true;
+            break;
           }
         }
 
