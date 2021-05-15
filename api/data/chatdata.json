@@ -12,5 +12,42 @@
     },
     "room_change": {
         "room_not_reserved_yet": "Não encontrei a sua reserva no sistema. Tem a certeza que efetuou uma reserva?"
+    },
+    "gym_access": {
+        "gym": [
+            "Temos um ginásio muito acolhedor!",
+            "O nosso ginásio é muito espaçoso.",
+            "O ginásio tem um rating 5 estrelas"
+        ],
+        "gym_machines":[
+            "Temos todas as máquinas que existem!",
+            "O nosso ginánio está todo equipado!",
+            "As máquinas que temos são todas completas!"
+        ],
+        "access_price":[
+            "Quem está no hotel não paga entrada, para restantes é 5€.",
+            "A entrada são 5€, para quem está no hotel é grátis!",
+            "É o preço de 5€ a entrada com a excessão de pessoas com quarto!"
+        ]
+
+    },
+    "pool_access": {
+        "pool": [
+            "A nossa piscina é muito grande!",
+            "Temos duas piscinas muito fundas!",
+            "As piscinas são muito bonitas."
+        ],
+        "pool_objects":[
+            "As piscinas têm otimas sobras e espreguiçadeiras e todo o tipo de brinquedos aquáticos!",
+            "Temos muitos acessório aquáticos e belas sombras á volta da piscina com espreguiçadeiras!",
+            "Temos todo o equimamente aquático e locais para descansar á sombra!"
+        ],
+        "access_price":[
+            "Quem está no hotel não paga entrada, para restantes é 2€.",
+            "A entrada são 2€, para quem está no hotel é grátis!",
+            "É o preço de 2€ a entrada com a excessão de pessoas com quarto!"
+        ]
+
     }
+    
 }

@@ -21,7 +21,7 @@ const conversation_states = [
   "room_service", // 3
   "gym_access", // 4
   "cafe_reservation", // 5
-  "pool_reservation", // 6
+  "pool_access", // 6
 ];
 
 let current_state = undefined;
@@ -43,8 +43,8 @@ module.exports = class ResponseHandler {
 
   handleResponse = (res, req, intents, entities) => {
     let message = this.defaultAnswer;
-    //console.log(intents);
-    //console.log(entities);
+    console.log(intents);
+    console.log(entities);
     let intent = {confidence: 0};
 
     for (let current_intent of intents) {
@@ -67,6 +67,13 @@ module.exports = class ResponseHandler {
       case "room_change":
         message = this.handleReservationChange(req, res, entities);
         break;
+      case "gym_access":
+        message = this.handleGymAccess(req, res, entities);
+        break;
+      case "pool_access":
+        message = this.handlePoolAccess(req, res, entities);
+        break;
+
     }
 
     return message;
@@ -156,6 +163,66 @@ module.exports = class ResponseHandler {
       message = this.file.room_reservation.room_already_reserved;
     } else {
       message = this.file.room_change.room_not_reserved_yet;
+    }
+
+    return message;
+  };
+
+  handleGymAccess = (res, req, entities) => {
+    let message = this.defaultAnswer;
+    let obj = false;
+    let gym = false;
+    let price = false;
+
+    for (let key in entities) {
+  
+      if (entities.hasOwnProperty(key)) {
+        if (entities[key][0].role == "gym") {
+          gym = true;
+        } else if (entities[key][0].role == "gym_machines") {
+          obj = true;
+        } else if (entities[key][0].role == "access_price") {
+          price = true;
+        }
+      }
+    }
+
+    if(gym && price || price){
+      message = this.file.gym_access.access_price[Math.floor(Math.random() * 3)];
+    }else if(gym && obj || obj){
+      message = this.file.gym_access.gym_machines[Math.floor(Math.random() * 3)];
+    }else if(gym){
+      message = this.file.gym_access.gym[Math.floor(Math.random() * 3)];
+    }
+
+    return message;
+  };
+
+  handlePoolAccess = (res, req, entities) => {
+    let message = this.defaultAnswer;
+    let obj = false;
+    let pool = false;
+    let price = false;
+
+    for (let key in entities) {
+  
+      if (entities.hasOwnProperty(key)) {
+        if (entities[key][0].role == "pool") {
+          pool = true;
+        } else if (entities[key][0].role == "pool_objects") {
+          obj = true;
+        } else if (entities[key][0].role == "access_price") {
+          price = true;
+        }
+      }
+    }
+
+    if(pool && price || price){
+      message = this.file.pool_access.access_price[Math.floor(Math.random() * 3)];
+    }else if(pool && obj || obj){
+      message = this.file.pool_access.pool_machines[Math.floor(Math.random() * 3)];
+    }else if(pool){
+      message = this.file.pool_access.pool[Math.floor(Math.random() * 3)];
     }
 
     return message;
