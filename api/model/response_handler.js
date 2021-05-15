@@ -97,7 +97,7 @@ module.exports = class ResponseHandler {
         } else if (entities[key][0].role == "room_reservation_question") {
           reservationQuestion = true;
           break;
-        }
+        } 
       }
     }
 
@@ -188,11 +188,11 @@ module.exports = class ResponseHandler {
     }
 
     if(gym && price || price){
-      message = this.file.gym_access.access_price[Math.floor(Math.random() * 3)];
+      message = this.file.gym_access.access_price[Math.floor(Math.random() * this.file.gym_access.access_price.length)];
     }else if(gym && obj || obj){
-      message = this.file.gym_access.gym_machines[Math.floor(Math.random() * 3)];
+      message = this.file.gym_access.gym_machines[Math.floor(Math.random() * this.file.gym_access.gym_machines.length)];
     }else if(gym){
-      message = this.file.gym_access.gym[Math.floor(Math.random() * 3)];
+      message = this.file.gym_access.gym[Math.floor(Math.random() * this.file.gym_access.gym.length)];
     }
 
     return message;
@@ -218,11 +218,11 @@ module.exports = class ResponseHandler {
     }
 
     if(pool && price || price){
-      message = this.file.pool_access.access_price[Math.floor(Math.random() * 3)];
+      message = this.file.pool_access.access_price[Math.floor(Math.random() * this.file.pool_access.access_price.length)];
     }else if(pool && obj || obj){
-      message = this.file.pool_access.pool_machines[Math.floor(Math.random() * 3)];
+      message = this.file.pool_access.pool_machines[Math.floor(Math.random() * this.file.pool_access.pool_machines.length)];
     }else if(pool){
-      message = this.file.pool_access.pool[Math.floor(Math.random() * 3)];
+      message = this.file.pool_access.pool[Math.floor(Math.random() * this.file.pool_access.pool.length)];
     }
 
     return message;
