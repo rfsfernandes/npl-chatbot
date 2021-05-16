@@ -93,7 +93,10 @@ module.exports = class ResponseHandler {
   };
 
   handleGreetings = (res, req, entities) =>{
-    this.message = this.file.greetings.greetings[this.getRandom(this.file.greetings.greetings.length)];
+    this.message = this.file.greetings.greetings
+    [
+      this.getRandom(this.file.greetings.greetings.length)
+    ];
     return this.message;
   }
 
@@ -102,7 +105,7 @@ module.exports = class ResponseHandler {
     let reservationQuestion = false;
 
     if (
-      entities.hasOwnProperty("meal_price:meal_price") &&
+      entities.hasOwnProperty("access_price:access_price") &&
       (entities.hasOwnProperty("room_quantity:room_quantity") ||
         entities.hasOwnProperty("bed_quantity:bed_quantity") ||
         entities.hasOwnProperty("bed_type:bed_type"))
@@ -110,8 +113,8 @@ module.exports = class ResponseHandler {
       this.message = this.file.room_reservation.reservation_prices[
         this.getRandom(this.file.room_reservation.reservation_prices.length)
       ]
-        .replace("{0}", this.couple_bed_price)
-        .replace("{1}", this.single_bed_price);
+        .replace("{0}", couple_bed_price)
+        .replace("{1}", single_bed_price);
     } else {
       for (let key in entities) {
         if (entities.hasOwnProperty(key)) {
@@ -168,8 +171,8 @@ module.exports = class ResponseHandler {
                   " O preço da sua reserva é: " +
                   this.reservation.room_quantity *
                     (this.reservation.bed_type.includes("casal")
-                      ? this.couple_bed_price * this.reservation.bed_quantity
-                      : this.single_bed_price * this.reservation.bed_quantity) +
+                      ? couple_bed_price * parseInt(this.reservation.bed_quantity)
+                      : single_bed_price * parseInt(this.reservation.bed_quantity)) +
                   "€";
               } else {
                 this.message =
@@ -194,7 +197,7 @@ module.exports = class ResponseHandler {
 
               for (
                 let index = 0;
-                index < this.reservation.room_quantity;
+                index < parseInt(this.reservation.room_quantity);
                 index++
               ) {
                 bed_ids_string = bed_ids_string + " " + (bed_id + index);
@@ -411,7 +414,6 @@ module.exports = class ResponseHandler {
           this.getRandom(this.file.gym_access.gym.length)
         ];
     }
-
     return this.message;
   };
 
@@ -448,7 +450,6 @@ module.exports = class ResponseHandler {
           this.getRandom(this.file.pool_access.pool.length)
         ];
     }
-
     return this.message;
   };
 
@@ -487,8 +488,8 @@ module.exports = class ResponseHandler {
       "<li>Preço: " +
       this.reservation.room_quantity *
         (this.reservation.bed_type.includes("casal")
-          ? this.couple_bed_price * this.reservation.bed_quantity
-          : this.single_bed_price * this.reservation.bed_quantity) +
+          ? couple_bed_price * parseInt(this.reservation.bed_quantity)
+          : single_bed_price * parseInt(this.reservation.bed_quantity)) +
       " €</li>" +
       "</ul>"
     );
