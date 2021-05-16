@@ -14,7 +14,7 @@ const axios = require("axios").default;
 const INITIAL_STATE = [
   {
     id: 0,
-    messageText: "Olá! Eu sou o Asdrubal",
+    messageText: "Bem vindo ao Nature Resort. Em que posso ajuda-lo?",
     type: 0,
     isDefault: false,
   },

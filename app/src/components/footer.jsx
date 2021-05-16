@@ -13,13 +13,9 @@ function Footer() {
       >
         <Grid item xs={12}>
           <h2>
-            O Asdrubal é um ChatBot que dá dicas nutricionais ao seu colega de
-            conversa.
+            Venha visitar-nos para uma experiência inesquecível.
           </h2>
-          <h3>
-            Se ele não perceber a pergunta, pode sempre ensiná-lo se assim o
-            desejar!
-          </h3>
+         
         </Grid>
       </Grid>
     </div>
