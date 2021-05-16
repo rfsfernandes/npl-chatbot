@@ -52,7 +52,7 @@ module.exports = class ResponseHandler {
     //console.log(intents);
     //console.log(entities);
     let intent = { confidence: 0 };
-
+    
     for (let current_intent of intents) {
       if (current_intent.confidence > intent.confidence) {
         intent = current_intent;

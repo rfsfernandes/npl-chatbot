@@ -47,6 +47,9 @@ app.post("/api/sendQuestion", function (req, res) {
     .then((response) => {
       if(response.status == 200) {
         let message = responseHandler.handleResponse(res, req, response.data.intents, response.data.entities);
+        if (!message) {
+          message = file.default_answer;
+        }
         res.status(201).json({ code: 200, answer: message})
       }
     })
