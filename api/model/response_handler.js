@@ -84,10 +84,18 @@ module.exports = class ResponseHandler {
       case "pool_access":
         this.message = this.handlePoolAccess(res, req, entities);
         break;
+      case "greetings":
+        this.message = this.handleGreetings(res, req, entities);
+        break;
     }
 
     return this.message;
   };
+
+  handleGreetings = (res, req, entities) =>{
+    this.message = this.file.greetings.greetings[this.getRandom(this.file.greetings.greetings.length)];
+    return this.message;
+  }
 
   handleReservation = (res, req, entities) => {
     this.temp_reservation = new Reservation();

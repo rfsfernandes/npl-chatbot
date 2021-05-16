@@ -126,6 +126,13 @@
             "É o preço de 2€ a entrada com a excessão de pessoas com quarto!"
         ]
 
+    },
+    "greetings": {
+        "greetings": [
+            "Olá!",
+            "Saudações!",
+            "Boas!"
+        ]
     }
     
 }
