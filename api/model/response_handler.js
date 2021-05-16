@@ -66,7 +66,9 @@ module.exports = class ResponseHandler {
 
     //console.log(this.current_state);
 
-    switch (this.current_state == undefined ? intent.name : this.current_state) {
+    switch (
+      this.current_state == undefined ? intent.name : this.current_state
+    ) {
       case "room_reservation":
         this.message = this.handleReservation(res, req, entities);
         break;
@@ -219,12 +221,11 @@ module.exports = class ResponseHandler {
 
   handleReservationChange = (res, req, entities) => {
     let cookie_room_reservation = this.readCookie(req, "room_reservation");
-  
+
     if (cookie_room_reservation != undefined) {
       this.reservation = cookie_room_reservation;
 
       if (Object.keys(entities).length === 0) {
-        
         if (!this.change_question_made) {
           this.message =
             this.file.room_change.room_change_intro[
@@ -244,17 +245,17 @@ module.exports = class ResponseHandler {
 
             this.temp_reservation.confirmation = value;
           } else {
-            this.temp_reservation[entities[key][0].role] = entities[key][0].value;
+            this.temp_reservation[entities[key][0].role] =
+              entities[key][0].value;
           }
         }
 
-        if(this.temp_reservation.datetime != undefined) {
+        if (this.temp_reservation.datetime != undefined) {
           const date = new Date(this.temp_reservation.datetime);
           this.temp_reservation.datetime = date;
         }
 
         if (this.temp_reservation.confirmation != undefined) {
-          
           if (this.temp_reservation.confirmation) {
             console.log("Confirmation true");
             for (const key in this.reservation) {
@@ -277,33 +278,42 @@ module.exports = class ResponseHandler {
           }
         } else {
           if (
-            (this.temp_reservation.bed_quantity != undefined && (this.temp_reservation.bed_quantity > this.reservation.bed_quantity ||
-            this.temp_reservation.bed_quantity < this.reservation.bed_quantity)) ||
-            (this.temp_reservation.bed_type != undefined && ((this.temp_reservation.bed_type.includes("casal") &&
-              !this.reservation.bed_type.includes("casal")) || // casal
-            (!this.temp_reservation.bed_type.includes("casal") &&
-              this.reservation.bed_type.includes("casal")) ||
-            ((this.temp_reservation.bed_type.includes("individual") ||
-              this.temp_reservation.bed_type.includes("individuais")) &&
-              (!this.reservation.bed_type.includes("individual") ||
-                !this.reservation.bed_type.includes("individuais"))) || // individual
-            ((!this.temp_reservation.bed_type.includes("individual") ||
-              !this.temp_reservation.bed_type.includes("individuais")) &&
-              (this.reservation.bed_type.includes("individual") ||
-                this.reservation.bed_type.includes("individuais"))))
-          )) {
+            (this.temp_reservation.bed_quantity != undefined &&
+              (this.temp_reservation.bed_quantity >
+                this.reservation.bed_quantity ||
+                this.temp_reservation.bed_quantity <
+                  this.reservation.bed_quantity)) ||
+            (this.temp_reservation.bed_type != undefined &&
+              ((this.temp_reservation.bed_type.includes("casal") &&
+                !this.reservation.bed_type.includes("casal")) || // casal
+                (!this.temp_reservation.bed_type.includes("casal") &&
+                  this.reservation.bed_type.includes("casal")) ||
+                ((this.temp_reservation.bed_type.includes("individual") ||
+                  this.temp_reservation.bed_type.includes("individuais")) &&
+                  (!this.reservation.bed_type.includes("individual") ||
+                    !this.reservation.bed_type.includes("individuais"))) || // individual
+                ((!this.temp_reservation.bed_type.includes("individual") ||
+                  !this.temp_reservation.bed_type.includes("individuais")) &&
+                  (this.reservation.bed_type.includes("individual") ||
+                    this.reservation.bed_type.includes("individuais")))))
+          ) {
             this.message = this.file.room_change.confirming_changes[
               this.getRandom(this.file.room_change.confirming_changes.length)
             ].replace("{0}", this.getResume());
-          } else if(this.temp_reservation.datetime != this.reservation.datetime){
+          } else if (
+            this.temp_reservation.datetime != this.reservation.datetime
+          ) {
             this.message = this.file.room_change.date_change[
               this.getRandom(this.file.room_change.date_change.length)
-            ].replace("{0}", this.formatDate(this.reservation.datetime)).replace("{1}", this.formatDate(this.temp_reservation.datetime));
-          } 
-          else {
+            ]
+              .replace("{0}", this.formatDate(this.reservation.datetime))
+              .replace("{1}", this.formatDate(this.temp_reservation.datetime));
+          } else {
             this.message =
               this.file.room_change.no_changes_identified[
-                this.getRandom(this.file.room_change.no_changes_identified.length)
+                this.getRandom(
+                  this.file.room_change.no_changes_identified.length
+                )
               ];
           }
         }
@@ -320,37 +330,45 @@ module.exports = class ResponseHandler {
     console.log(cookie_room_reservation);
     if (cookie_room_reservation && cookie_room_reservation != "undefined") {
       this.reservation = cookie_room_reservation;
-      
+
       if (this.waiting_cancel) {
         let cancel = false;
         for (let key in entities) {
           if (entities[key][0].role == "confirmation") {
-            
             if (entities[key][0].value == "true") {
               cancel = true;
             }
-  
           }
         }
 
-        if(cancel) {
-          this.message = this.file.room_cancel.cancel_success[this.getRandom(this.file.room_cancel.cancel_success.length)];
+        if (cancel) {
+          this.message =
+            this.file.room_cancel.cancel_success[
+              this.getRandom(this.file.room_cancel.cancel_success.length)
+            ];
           this.saveCookie(res, "room_reservation", undefined);
         } else {
-          this.message = this.file.room_cancel.cancel_fail[this.getRandom(this.file.room_cancel.cancel_fail.length)];
+          this.message =
+            this.file.room_cancel.cancel_fail[
+              this.getRandom(this.file.room_cancel.cancel_fail.length)
+            ];
         }
         this.waiting_cancel = false;
       } else {
-        this.message = this.file.room_cancel.cancel_confirmation[this.getRandom(this.file.room_cancel.cancel_confirmation.length)].replace("{0}", this.getResume());
+        this.message = this.file.room_cancel.cancel_confirmation[
+          this.getRandom(this.file.room_cancel.cancel_confirmation.length)
+        ].replace("{0}", this.getResume());
         this.waiting_cancel = true;
       }
-
     } else {
-      this.message = this.file.room_cancel.no_reservation_found[this.getRandom(this.file.room_cancel.no_reservation_found.length)];
+      this.message =
+        this.file.room_cancel.no_reservation_found[
+          this.getRandom(this.file.room_cancel.no_reservation_found.length)
+        ];
     }
 
     return this.message;
-  }
+  };
 
   handleGymAccess = (res, req, entities) => {
     let obj = false;
@@ -470,11 +488,12 @@ module.exports = class ResponseHandler {
 
   formatDate = (date) => {
     date = new Date(date);
-    return date.getUTCDate() +
-    " de " +
-    monthNames[date.getUTCMonth()] +
-    " de " +
-    date.getFullYear();
-  }
-
+    return (
+      date.getUTCDate() +
+      " de " +
+      monthNames[date.getUTCMonth()] +
+      " de " +
+      date.getFullYear()
+    );
+  };
 };
