@@ -14,6 +14,9 @@ const monthNames = [
   "Dezembro",
 ];
 
+const single_bed_price = 35;
+const couple_bed_price = 65;
+
 const conversation_states = [
   "room_reservation", // 0
   "room_change", // 1
@@ -25,6 +28,9 @@ const conversation_states = [
 ];
 
 let current_state = undefined;
+let message = this.defaultAnswer;
+let change_question_made = false;
+let temp_reservation = new Reservation();
 
 module.exports = class ResponseHandler {
   file;
@@ -42,10 +48,9 @@ module.exports = class ResponseHandler {
   };
 
   handleResponse = (res, req, intents, entities) => {
-    let message = this.defaultAnswer;
-    console.log(intents);
-    console.log(entities);
-    let intent = {confidence: 0};
+    //console.log(intents);
+    //console.log(entities);
+    let intent = { confidence: 0 };
 
     for (let current_intent of intents) {
       if (current_intent.confidence > intent.confidence) {
@@ -55,127 +60,266 @@ module.exports = class ResponseHandler {
 
     //console.log(intent);
     if (intent.name != "confirmation") {
-      current_state = intent.name;
+      this.current_state = intent.name;
     }
 
-    //console.log(current_state);
+    //console.log(this.current_state);
 
-    switch (current_state == undefined ? intent.name : current_state) {
+    switch (this.current_state == undefined ? intent.name : this.current_state) {
       case "room_reservation":
-        message = this.handleReservation(res, req, entities);
+        this.message = this.handleReservation(res, req, entities);
         break;
       case "room_change":
-        message = this.handleReservationChange(req, res, entities);
+        this.message = this.handleReservationChange(res, req, entities);
         break;
       case "gym_access":
-        message = this.handleGymAccess(req, res, entities);
+        this.message = this.handleGymAccess(res, req, entities);
         break;
       case "pool_access":
-        message = this.handlePoolAccess(req, res, entities);
+        this.message = this.handlePoolAccess(res, req, entities);
         break;
-
     }
 
-    return message;
+    return this.message;
   };
 
   handleReservation = (res, req, entities) => {
+    this.temp_reservation = new Reservation();
     let reservationQuestion = false;
-    let message = this.defaultAnswer;
 
-    for (let key in entities) {
-      if (entities.hasOwnProperty(key)) {
-        if (
-          entities[key][0].role != "room_reservation_question" &&
-          entities[key][0].role != "confirmation"
-        ) {
-          this.reservation[entities[key][0].role] = entities[key][0].value;
-        } else if (
-          entities[key][0].role == "confirmation"
-        ) {
-          this.reservation.confirmation = entities[key][0].role;
-        } else if (entities[key][0].role == "room_reservation_question") {
-          reservationQuestion = true;
-          break;
-        } 
-      }
-    }
+    if (
+      entities.hasOwnProperty("meal_price:meal_price") &&
+      (entities.hasOwnProperty("room_quantity:room_quantity") ||
+        entities.hasOwnProperty("bed_quantity:bed_quantity") ||
+        entities.hasOwnProperty("bed_type:bed_type"))
+    ) {
+      this.message = this.file.room_reservation.reservation_prices[
+        this.getRandom(this.file.room_reservation.reservation_prices.length)
+      ]
+        .replace("{0}", this.couple_bed_price)
+        .replace("{1}", this.single_bed_price);
+    } else {
+      for (let key in entities) {
+        if (entities.hasOwnProperty(key)) {
+          if (
+            entities[key][0].role != "room_reservation_question" &&
+            entities[key][0].role != "confirmation"
+          ) {
+            this.reservation[entities[key][0].role] = entities[key][0].value;
+          } else if (entities[key][0].role == "confirmation") {
+            let value = false;
 
-    if (!reservationQuestion) {
-      let missingProperty = false;
+            if (entities[key][0].value == "true") {
+              value = true;
+            }
 
-      let cookie_room_reservation = this.readCookie(req, "room_reservation");
-
-      if (cookie_room_reservation) {
-        this.reservation = cookie_room_reservation;
-        message = this.file.room_reservation.room_already_reserved;
-      } else {
-        console.log(this.reservation);
-        for (let key in this.reservation) {
-          
-          if (!this.reservation[key]) {
-            message = this.file.room_reservation[`missing_${key}`];
-            missingProperty = true;
+            this.reservation.confirmation = value;
+          } else if (entities[key][0].role == "room_reservation_question") {
+            reservationQuestion = true;
             break;
           }
         }
-
-        if (!missingProperty) {
-          const date = new Date(this.reservation.datetime);
-          this.reservation.datetime = date;
-
-          this.saveCookie(res, "room_reservation", this.reservation);
-          message =
-            this.file.room_reservation.reservation_success +
-            "<br>" +
-            "<ul>" +
-            "<li>Número de quartos: " +
-            this.reservation.room_quantity +
-            "</li>" +
-            "<li>Número de camas: " +
-            this.reservation.bed_quantity +
-            "</li>" +
-            "<li>Tipo de camas: " +
-            this.reservation.bed_type +
-            "</li>" +
-            "<li>Data: " +
-            this.reservation.datetime.getUTCDate() +
-            " " +
-            monthNames[this.reservation.datetime.getUTCMonth()] +
-            " " +
-            this.reservation.datetime.getFullYear() +
-            "</li>" +
-            "</ul>";
-        }
       }
-    } else {
-      message = this.file.room_reservation.room_reservation_question;
+
+      if (!reservationQuestion) {
+        let missingProperty = false;
+
+        let cookie_room_reservation = this.readCookie(req, "room_reservation");
+
+        if (cookie_room_reservation) {
+          this.reservation = cookie_room_reservation;
+          this.message =
+            this.file.room_reservation.room_already_reserved[
+              this.getRandom(
+                this.file.room_reservation.room_already_reserved.length
+              )
+            ];
+        } else {
+          for (let key in this.reservation) {
+            if (!this.reservation[key]) {
+              if (key == "confirmation") {
+                console.log(
+                  this.file.room_reservation.missing_confirmation[
+                    this.getRandom(
+                      this.file.room_reservation.missing_confirmation.length
+                    )
+                  ]
+                );
+                this.message =
+                  this.file.room_reservation.missing_confirmation[
+                    this.getRandom(
+                      this.file.room_reservation.missing_confirmation.length
+                    )
+                  ] +
+                  " O preço da sua reserva é: " +
+                  this.reservation.room_quantity *
+                    (this.reservation.bed_type.includes("casal")
+                      ? this.couple_bed_price * this.reservation.bed_quantity
+                      : this.single_bed_price * this.reservation.bed_quantity) +
+                  "€";
+              } else {
+                this.message =
+                  this.file.room_reservation[`missing_${key}`][
+                    this.getRandom(
+                      this.file.room_reservation[`missing_${key}`].length
+                    )
+                  ];
+              }
+              missingProperty = true;
+              break;
+            }
+          }
+
+          if (!missingProperty) {
+            if (this.reservation.confirmation == true) {
+              const date = new Date(this.reservation.datetime);
+              this.reservation.datetime = date;
+              const bed_id = this.getRandom(500);
+
+              let bed_ids_string = "";
+
+              for (
+                let index = 0;
+                index < this.reservation.room_quantity;
+                index++
+              ) {
+                bed_ids_string = bed_ids_string + " " + (bed_id + index);
+              }
+
+              this.reservation.bed_ids = bed_ids_string;
+              this.saveCookie(res, "room_reservation", this.reservation);
+
+              this.message =
+                this.file.room_reservation.reservation_success[
+                  this.getRandom(
+                    this.file.room_reservation.reservation_success.length
+                  )
+                ] + this.getResume();
+            } else {
+              this.message =
+                this.file.room_reservation.reservation_fail[
+                  this.getRandom(
+                    this.file.room_reservation.reservation_fail.length
+                  )
+                ];
+            }
+          }
+        }
+      } else {
+        this.message = this.file.room_reservation.room_reservation_question;
+      }
     }
 
-    return message;
+    return this.message;
   };
 
   handleReservationChange = (res, req, entities) => {
     let cookie_room_reservation = this.readCookie(req, "room_reservation");
-
+  
     if (cookie_room_reservation) {
       this.reservation = cookie_room_reservation;
-      message = this.file.room_reservation.room_already_reserved;
+
+      if (Object.keys(entities).length === 0) {
+        
+        if (!this.change_question_made) {
+          this.message =
+            this.file.room_change.room_change_intro[
+              this.getRandom(this.file.room_change.room_change_intro.length)
+            ];
+          this.change_question_made = true;
+        }
+      } else {
+        this.change_question_made = false;
+
+        for (let key in entities) {
+          if (entities[key][0].role == "confirmation") {
+            let value = false;
+            console.log(entities[key][0].role);
+            console.log(entities[key][0].value);
+            console.log(entities[key][0].value == "true");
+            if (entities[key][0].value == "true") {
+              value = true;
+            }
+
+            this.temp_reservation.confirmation = value;
+          } else {
+            this.temp_reservation[entities[key][0].role] = entities[key][0].value;
+          }
+        }
+
+        if(this.temp_reservation.datetime != undefined) {
+          const date = new Date(this.temp_reservation.datetime);
+          this.temp_reservation.datetime = date;
+        }
+
+        if (this.temp_reservation.confirmation != undefined) {
+          
+          if (this.temp_reservation.confirmation) {
+            console.log("Confirmation true");
+            for (const key in this.reservation) {
+              if (this.temp_reservation[key] != undefined) {
+                this.reservation[key] = this.temp_reservation[key];
+              }
+            }
+
+            this.saveCookie(res, "room_reservation", this.reservation);
+            this.temp_reservation = new Reservation();
+            this.message =
+              this.file.room_change.change_success[
+                this.getRandom(this.file.room_change.change_success.length)
+              ];
+          } else {
+            this.message =
+              this.file.room_change.change_fail[
+                this.getRandom(this.file.room_change.change_fail.length)
+              ];
+          }
+        } else {
+          if (
+            (this.temp_reservation.bed_quantity != undefined && (this.temp_reservation.bed_quantity > this.reservation.bed_quantity ||
+            this.temp_reservation.bed_quantity < this.reservation.bed_quantity)) ||
+            (this.temp_reservation.bed_type != undefined && ((this.temp_reservation.bed_type.includes("casal") &&
+              !this.reservation.bed_type.includes("casal")) || // casal
+            (!this.temp_reservation.bed_type.includes("casal") &&
+              this.reservation.bed_type.includes("casal")) ||
+            ((this.temp_reservation.bed_type.includes("individual") ||
+              this.temp_reservation.bed_type.includes("individuais")) &&
+              (!this.reservation.bed_type.includes("individual") ||
+                !this.reservation.bed_type.includes("individuais"))) || // individual
+            ((!this.temp_reservation.bed_type.includes("individual") ||
+              !this.temp_reservation.bed_type.includes("individuais")) &&
+              (this.reservation.bed_type.includes("individual") ||
+                this.reservation.bed_type.includes("individuais"))))
+          )) {
+            this.message = this.file.room_change.confirming_changes[
+              this.getRandom(this.file.room_change.confirming_changes.length)
+            ].replace("{0}", this.getResume());
+          } else if(this.temp_reservation.datetime != this.reservation.datetime){
+            this.message = this.file.room_change.date_change[
+              this.getRandom(this.file.room_change.date_change.length)
+            ].replace("{0}", this.formatDate(this.reservation.datetime)).replace("{1}", this.formatDate(this.temp_reservation.datetime));
+          } 
+          else {
+            this.message =
+              this.file.room_change.no_changes_identified[
+                this.getRandom(this.file.room_change.no_changes_identified.length)
+              ];
+          }
+        }
+      }
     } else {
-      message = this.file.room_change.room_not_reserved_yet;
+      this.message = this.file.room_change.room_not_reserved_yet;
     }
 
-    return message;
+    return this.message;
   };
 
   handleGymAccess = (res, req, entities) => {
-    let message = this.defaultAnswer;
     let obj = false;
     let gym = false;
     let price = false;
 
     for (let key in entities) {
-  
       if (entities.hasOwnProperty(key)) {
         if (entities[key][0].role == "gym") {
           gym = true;
@@ -187,25 +331,32 @@ module.exports = class ResponseHandler {
       }
     }
 
-    if(gym && price || price){
-      message = this.file.gym_access.access_price[Math.floor(Math.random() * this.file.gym_access.access_price.length)];
-    }else if(gym && obj || obj){
-      message = this.file.gym_access.gym_machines[Math.floor(Math.random() * this.file.gym_access.gym_machines.length)];
-    }else if(gym){
-      message = this.file.gym_access.gym[Math.floor(Math.random() * this.file.gym_access.gym.length)];
+    if ((gym && price) || price) {
+      this.message =
+        this.file.gym_access.access_price[
+          this.getRandom(this.file.gym_access.access_price.length)
+        ];
+    } else if ((gym && obj) || obj) {
+      this.message =
+        this.file.gym_access.gym_machines[
+          this.getRandom(this.file.gym_access.gym_machines.length)
+        ];
+    } else if (gym) {
+      this.message =
+        this.file.gym_access.gym[
+          this.getRandom(this.file.gym_access.gym.length)
+        ];
     }
 
-    return message;
+    return this.message;
   };
 
   handlePoolAccess = (res, req, entities) => {
-    let message = this.defaultAnswer;
     let obj = false;
     let pool = false;
     let price = false;
 
     for (let key in entities) {
-  
       if (entities.hasOwnProperty(key)) {
         if (entities[key][0].role == "pool") {
           pool = true;
@@ -217,15 +368,24 @@ module.exports = class ResponseHandler {
       }
     }
 
-    if(pool && price || price){
-      message = this.file.pool_access.access_price[Math.floor(Math.random() * this.file.pool_access.access_price.length)];
-    }else if(pool && obj || obj){
-      message = this.file.pool_access.pool_machines[Math.floor(Math.random() * this.file.pool_access.pool_machines.length)];
-    }else if(pool){
-      message = this.file.pool_access.pool[Math.floor(Math.random() * this.file.pool_access.pool.length)];
+    if ((pool && price) || price) {
+      this.message =
+        this.file.pool_access.access_price[
+          this.getRandom(this.file.pool_access.access_price.length)
+        ];
+    } else if ((pool && obj) || obj) {
+      this.message =
+        this.file.pool_access.pool_machines[
+          this.getRandom(this.file.pool_access.pool_machines.length)
+        ];
+    } else if (pool) {
+      this.message =
+        this.file.pool_access.pool[
+          this.getRandom(this.file.pool_access.pool.length)
+        ];
     }
 
-    return message;
+    return this.message;
   };
 
   saveCookie = (res, cookieName, cookieValue) => {
@@ -233,8 +393,50 @@ module.exports = class ResponseHandler {
   };
 
   readCookie = (req, cookieName) => {
-    console.log(req.cookies);
     if (req.cookies) return req.cookies[cookieName];
     else return undefined;
   };
+
+  getRandom = (max) => {
+    return Math.floor(Math.random() * max);
+  };
+
+  getResume = () => {
+    return (
+      "<br>" +
+      "<ul>" +
+      "<li>Números dos quartos:" +
+      this.reservation.bed_ids +
+      "</li>" +
+      "<li>Número de quartos: " +
+      this.reservation.room_quantity +
+      "</li>" +
+      "<li>Número de camas: " +
+      this.reservation.bed_quantity +
+      "</li>" +
+      "<li>Tipo de camas: " +
+      this.reservation.bed_type +
+      "</li>" +
+      "<li>Data: " +
+      this.formatDate(this.reservation.datetime) +
+      "</li>" +
+      "<li>Preço: " +
+      this.reservation.room_quantity *
+        (this.reservation.bed_type.includes("casal")
+          ? this.couple_bed_price * this.reservation.bed_quantity
+          : this.single_bed_price * this.reservation.bed_quantity) +
+      " €</li>" +
+      "</ul>"
+    );
+  };
+
+  formatDate = (date) => {
+    date = new Date(date);
+    return date.getUTCDate() +
+    " de " +
+    monthNames[date.getUTCMonth()] +
+    " de " +
+    date.getFullYear();
+  }
+
 };

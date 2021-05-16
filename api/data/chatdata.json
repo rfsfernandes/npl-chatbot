@@ -1,17 +1,77 @@
 {
     "default_answer": "Desculpa, não sei responder a tua pergunta. Podes sempre ensinar-me nas opções desta resposta, e para a próxima já saberei :)",
     "room_reservation": {
-        "room_already_reserved": "Pelo que estou a ver no sistema, já tem uma reserva! Quer recomeçar de novo ou alterar esta reserva?",
-        "room_reservation_question": "Para reservar um quarto basta dizer quantas camas quer e o tipo de cama que quer (cama de casal ou cama individual)!",
-        "missing_datetime": "Indique a data para a qual pretende realizar a reserva!",
-        "missing_bed_type": "Que tipo de cama pretende? Cama de casal ou individual?",
-        "missing_bed_quantity": "De quantas camas necessita no quarto?",
-        "missing_room_quantity": "Quantos quartos pretende reservar?",
-        "missing_confirmation": "Deseja confirmar a reserva?",
-        "reservation_success": "O seu quarto foi reservado com sucesso! Reveja os detalhes: "
+        "room_already_reserved": [
+            "Pelo que estou a ver no sistema, já tem uma reserva! Quer recomeçar de novo ou alterar esta reserva?",
+            "Encontrei uma reserva sua. Pretende alterar ou cancelar esta reserva?"
+        ],
+        "room_reservation_question": [
+            "Para reservar um quarto basta dizer quantas camas quer e o tipo de cama que quer (cama de casal ou cama individual)!",
+            "Se pretende efetuar uma reserva basta dizer o número de quartos, o número de camas e o tipo de camas (cama de casal ou individual)!"
+        ],
+        "missing_datetime": [
+            "Indique a data para a qual pretende realizar a reserva, por favor.",
+            "Pretende efetuar esta reserva para quando?",
+            "Qual o dia e mês que tem em mente?"
+        ],
+        "missing_bed_type": [
+            "Que tipo de cama pretende? Cama de casal ou individual?",
+            "Cama de casal ou individual?",
+            "Cama de casal? Ou cama individual?"
+        ],
+        "missing_bed_quantity": [
+            "De quantas camas necessita no quarto?",
+            "Sendo assim, quantas camas prentende no seu quarto?"
+        ],
+        "missing_room_quantity": [
+            "Quantos quartos pretende reservar?"
+        ],
+        "missing_confirmation": [
+            "Deseja confirmar a reserva?",
+            "Podemos então concluir a reserva?",
+            "Confirmamos a reserva?"
+        ],
+        "reservation_success": [
+            "O seu quarto foi reservado com sucesso! Reveja os detalhes: ",
+            "Prontinho, já tem a sua reserva efetuada. Vou fazer um pequeno resumo com os detalhes: "
+        ],
+        "reservation_fail": [
+            "Compreendo. Espero voltar a falar consigo e espero que numa próxima vez fique connosco! Até à próxima!",
+            "Sem problema. Volte sempre!"
+        ],
+        "reservation_prices": [
+            "Um quarto com uma cama de casal custa {0}€. Se preferir cama individual, custa {1}€",
+            "Depende do tipo de cama. Se for cama de casal, custa {0}€. No entanto, pode optar por cama individual, e fica por {1}€"
+        ]
     },
     "room_change": {
-        "room_not_reserved_yet": "Não encontrei a sua reserva no sistema. Tem a certeza que efetuou uma reserva?"
+        "room_not_reserved_yet": "Não encontrei a sua reserva no sistema. Tem a certeza que efetuou uma reserva?",
+        "room_change_intro": [
+            "Certíssimo, sem problema. O que deseja então alterar?",
+            "Necessita de mais camas ou pretende alterar o tipo de cama? A data está correta?",
+            "Então? Precisa de mudar de data? Ou aumentar o numero de camas?"
+        ],
+        "confirming_changes" : [
+            "Como houve uma alteração na sua reserva, aprensento-lhe o novo resumo: {0}. </br>Note que o número do quarto mudou, assim como o preço.</br>Pretende confirmar?",
+            "Sendo assim, devido às alterações que realizou, o número do quarto mudou. Aprensento-lhe o novo resumo da sua reserva: {0}.</br>Pretende confirmar? Note que o preço alterou!",
+            "Está feito! Como foi efetuada uma alteração na sua reserva, o número do quarto mudou, tal como o preço.</br>Aprensento-lhe então o novo resumo da sua reserva: {0}.</br>Pretende confirmar?"
+        ],
+        "no_changes_identified": [
+            "Não notámos qualquer alteração na sua reserva. O que pretende alterar mesmo?",
+            "Os dados que nos indicou já são os da sua reserva, não se precisa de preocupar!"
+        ],
+        "change_success": [
+            "Alterações efetuadas. Desejo-lhe uma boa estadia!",
+            "Está feito. Alterações feitas. Obrigado e desejo-lhe uma ótima estadia!"
+        ],
+        "change_fail": [
+            "Certo. Sendo assim, fica tudo como está! Tenha uma boa estadia!",
+            "Ok, sem problema. Sendo assim, desejo-lhe uma boa estadia!"
+        ],
+        "date_change": [
+            "Ou seja, quer alterar a data de dia {0} para dia {1}?",
+            "Sendo assim, alteramos a data de {0} para dia {1}?"
+        ]
     },
     "gym_access": {
         "gym": [
