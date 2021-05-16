@@ -31,6 +31,7 @@ let current_state = undefined;
 let message = this.defaultAnswer;
 let change_question_made = false;
 let temp_reservation = new Reservation();
+let waiting_cancel = false;
 
 module.exports = class ResponseHandler {
   file;
@@ -71,6 +72,9 @@ module.exports = class ResponseHandler {
         break;
       case "room_change":
         this.message = this.handleReservationChange(res, req, entities);
+        break;
+      case "room_cancel":
+        this.message = this.handleReservationCancel(res, req, entities);
         break;
       case "gym_access":
         this.message = this.handleGymAccess(res, req, entities);
@@ -126,7 +130,7 @@ module.exports = class ResponseHandler {
 
         let cookie_room_reservation = this.readCookie(req, "room_reservation");
 
-        if (cookie_room_reservation) {
+        if (cookie_room_reservation != undefined) {
           this.reservation = cookie_room_reservation;
           this.message =
             this.file.room_reservation.room_already_reserved[
@@ -216,7 +220,7 @@ module.exports = class ResponseHandler {
   handleReservationChange = (res, req, entities) => {
     let cookie_room_reservation = this.readCookie(req, "room_reservation");
   
-    if (cookie_room_reservation) {
+    if (cookie_room_reservation != undefined) {
       this.reservation = cookie_room_reservation;
 
       if (Object.keys(entities).length === 0) {
@@ -234,9 +238,6 @@ module.exports = class ResponseHandler {
         for (let key in entities) {
           if (entities[key][0].role == "confirmation") {
             let value = false;
-            console.log(entities[key][0].role);
-            console.log(entities[key][0].value);
-            console.log(entities[key][0].value == "true");
             if (entities[key][0].value == "true") {
               value = true;
             }
@@ -313,6 +314,43 @@ module.exports = class ResponseHandler {
 
     return this.message;
   };
+
+  handleReservationCancel = (res, req, entities) => {
+    let cookie_room_reservation = this.readCookie(req, "room_reservation");
+    console.log(cookie_room_reservation);
+    if (cookie_room_reservation && cookie_room_reservation != "undefined") {
+      this.reservation = cookie_room_reservation;
+      
+      if (this.waiting_cancel) {
+        let cancel = false;
+        for (let key in entities) {
+          if (entities[key][0].role == "confirmation") {
+            
+            if (entities[key][0].value == "true") {
+              cancel = true;
+            }
+  
+          }
+        }
+
+        if(cancel) {
+          this.message = this.file.room_cancel.cancel_success[this.getRandom(this.file.room_cancel.cancel_success.length)];
+          this.saveCookie(res, "room_reservation", undefined);
+        } else {
+          this.message = this.file.room_cancel.cancel_fail[this.getRandom(this.file.room_cancel.cancel_fail.length)];
+        }
+        this.waiting_cancel = false;
+      } else {
+        this.message = this.file.room_cancel.cancel_confirmation[this.getRandom(this.file.room_cancel.cancel_confirmation.length)].replace("{0}", this.getResume());
+        this.waiting_cancel = true;
+      }
+
+    } else {
+      this.message = this.file.room_cancel.no_reservation_found[this.getRandom(this.file.room_cancel.no_reservation_found.length)];
+    }
+
+    return this.message;
+  }
 
   handleGymAccess = (res, req, entities) => {
     let obj = false;

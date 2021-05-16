@@ -1,5 +1,5 @@
 {
-    "default_answer": "Desculpa, não sei responder a tua pergunta. Podes sempre ensinar-me nas opções desta resposta, e para a próxima já saberei :)",
+    "default_answer": "Desculpe, não sei responder a tua pergunta. Podes sempre ensinar-me nas opções desta resposta, e para a próxima já saberei :)",
     "room_reservation": {
         "room_already_reserved": [
             "Pelo que estou a ver no sistema, já tem uma reserva! Quer recomeçar de novo ou alterar esta reserva?",
@@ -71,6 +71,24 @@
         "date_change": [
             "Ou seja, quer alterar a data de dia {0} para dia {1}?",
             "Sendo assim, alteramos a data de {0} para dia {1}?"
+        ]
+    },
+    "room_cancel": {
+        "no_reservation_found": [
+            "Peço desculpa, mas não encontrei a sua reserva. Não consigo cancelar algo que não está marcado!",
+            "A sua reserva não se encontra no sistema. Efetue uma reserva primeiro."
+        ],
+        "cancel_confirmation": [
+            "Entendido. </br>A reserva: {0}.</br>Deseja cancelar esta reserva?",
+            "Lamento saber. </br>A sua reserva é esta: {0}.</br>Pretende realmente cancelar?"
+        ],
+        "cancel_success": [
+            "A sua reserva foi cancelada. Obrigado.",
+            "Lamento que não tenhamos correspondido às expectativas. A sua reserva foi cancelada. Obrigado."
+        ],
+        "cancel_fail": [
+            "Excelente! Obrigado por continuar connosco.",
+            "A sua reserva continua marcada! Obrigado pela confiança."
         ]
     },
     "gym_access": {
