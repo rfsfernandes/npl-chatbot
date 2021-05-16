@@ -123,6 +123,7 @@ module.exports = class ResponseHandler {
             entities[key][0].role != "confirmation"
           ) {
             this.reservation[entities[key][0].role] = entities[key][0].value;
+            break;
           } else if (entities[key][0].role == "confirmation") {
             let value = false;
 
@@ -131,6 +132,7 @@ module.exports = class ResponseHandler {
             }
 
             this.reservation.confirmation = value;
+            break;
           } else if (entities[key][0].role == "room_reservation_question") {
             reservationQuestion = true;
             break;
@@ -188,7 +190,7 @@ module.exports = class ResponseHandler {
           }
 
           if (!missingProperty) {
-            if (this.reservation.confirmation == true) {
+            if (this.reservation.confirmation == true || this.reservation.confirmation == 'true') {
               const date = new Date(this.reservation.datetime);
               this.reservation.datetime = date;
               const bed_id = this.getRandom(500);
@@ -290,10 +292,8 @@ module.exports = class ResponseHandler {
         } else {
           if (
             (temp_reservation.bed_quantity != undefined &&
-              (temp_reservation.bed_quantity >
-                this.reservation.bed_quantity ||
-                temp_reservation.bed_quantity <
-                  this.reservation.bed_quantity)) ||
+              (temp_reservation.bed_quantity !=
+                this.reservation.bed_quantity)) ||
             (temp_reservation.bed_type != undefined &&
               ((temp_reservation.bed_type.includes("casal") &&
                 !this.reservation.bed_type.includes("casal")) || // casal
